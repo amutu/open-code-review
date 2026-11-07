@@ -73,7 +73,7 @@ It honours three environment variables:
 | `OCR_VERSION` | latest release | Pin a specific release tag (e.g. `v1.2.3`). |
 | `OCR_GITHUB_MIRROR` | *(unset)* | Download the release binary and its checksum through a GitHub mirror domain (e.g. `gh-proxy.com`). |
 
-The script supports `darwin` and `linux` on `amd64` / `arm64`.
+The script supports `darwin`, `linux`, and `freebsd` on `amd64` / `arm64`.
 
 #### Using a GitHub mirror
 
@@ -141,6 +141,14 @@ chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-linux-arm64
 chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 
+# FreeBSD x86_64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-amd64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
+# FreeBSD ARM64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-arm64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
 # Windows (AMD64)
 curl -Lo ocr.exe https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-windows-amd64.exe
 
@@ -176,6 +184,10 @@ make build              # writes dist/opencodereview (dist/opencodereview.exe on
 sudo cp dist/opencodereview /usr/local/bin/ocr
 ```
 
+> **FreeBSD:** the base-system `make` is BSD make, which cannot parse this
+> Makefile. Install GNU make (`pkg install gmake`) and use `gmake` in place of
+> `make` for every target below.
+
 #### Build for another platform
 
 ```bash
@@ -183,9 +195,11 @@ make build-linux-amd64
 make build-linux-arm64
 make build-darwin-amd64
 make build-darwin-arm64
+make build-freebsd-amd64   # FreeBSD (x86_64)
+make build-freebsd-arm64   # FreeBSD (ARM64)
 make build-windows-amd64   # Windows (x86_64)
 make build-windows-arm64   # Windows (ARM64)
-make build-all          # all six at once
+make build-all          # all eight at once
 make sha256sum          # also produce sha256sum.txt
 ```
 

@@ -71,7 +71,7 @@ curl -fsSL https://open-codereview.ai/install.sh | sh
 | `OCR_VERSION` | 最新 release | 特定の release tag に固定します（例：`v1.2.3`）。 |
 | `OCR_GITHUB_MIRROR` | （未設定） | GitHub ミラードメイン経由でリリースバイナリとそのチェックサムをダウンロードします（例：`gh-proxy.com`）。 |
 
-このスクリプトは `darwin` と `linux` の `amd64` / `arm64` をサポートします。
+このスクリプトは `darwin` と `linux` と `freebsd` の `amd64` / `arm64` をサポートします。
 
 #### GitHub ミラーを使用する
 
@@ -127,6 +127,14 @@ chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-linux-arm64
 chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 
+# FreeBSD x86_64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-amd64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
+# FreeBSD ARM64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-arm64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
 # Windows (AMD64)
 curl -Lo ocr.exe https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-windows-amd64.exe
 
@@ -160,6 +168,8 @@ make build              # dist/opencodereview を生成（Windows では dist/op
 sudo cp dist/opencodereview /usr/local/bin/ocr
 ```
 
+> **FreeBSD:** ベースシステムの `make` は BSD make であり、この Makefile を解釈できません。GNU make を導入し（`pkg install gmake`）、以下のすべてのターゲットで `make` の代わりに `gmake` を使用してください。
+
 #### 他のプラットフォーム向けにビルドする
 
 ```bash
@@ -167,9 +177,11 @@ make build-linux-amd64
 make build-linux-arm64
 make build-darwin-amd64
 make build-darwin-arm64
+make build-freebsd-amd64   # FreeBSD (x86_64)
+make build-freebsd-arm64   # FreeBSD (ARM64)
 make build-windows-amd64   # Windows (x86_64)
 make build-windows-arm64   # Windows (ARM64)
-make build-all          # 6 つすべてを一括ビルド
+make build-all          # 8 つすべてを一括ビルド
 make sha256sum          # sha256sum.txt も生成
 ```
 

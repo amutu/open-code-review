@@ -69,7 +69,7 @@ curl -fsSL https://open-codereview.ai/install.sh | sh
 | `OCR_VERSION` | 最新 release | 固定到某个 release tag（如 `v1.2.3`）。 |
 | `OCR_GITHUB_MIRROR` | （未设置） | 通过 GitHub 镜像域名下载 release 二进制及其校验和（如 `gh-proxy.com`）。 |
 
-该脚本支持 `darwin` 与 `linux` 的 `amd64` / `arm64`。
+该脚本支持 `darwin`、`linux` 与 `freebsd` 的 `amd64` / `arm64`。
 
 #### 使用 GitHub 镜像
 
@@ -124,6 +124,14 @@ chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-linux-arm64
 chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 
+# FreeBSD x86_64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-amd64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
+# FreeBSD ARM64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-arm64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
 # Windows (AMD64)
 curl -Lo ocr.exe https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-windows-amd64.exe
 
@@ -157,6 +165,8 @@ make build              # 产出 dist/opencodereview（Windows 上是 dist/openc
 sudo cp dist/opencodereview /usr/local/bin/ocr
 ```
 
+> **FreeBSD：** 系统自带的 `make` 是 BSD make，无法解析本 Makefile。请安装 GNU make（`pkg install gmake`），并在下方所有目标中用 `gmake` 代替 `make`。
+
 #### 为其他平台构建
 
 ```bash
@@ -164,9 +174,11 @@ make build-linux-amd64
 make build-linux-arm64
 make build-darwin-amd64
 make build-darwin-arm64
+make build-freebsd-amd64   # FreeBSD (x86_64)
+make build-freebsd-arm64   # FreeBSD (ARM64)
 make build-windows-amd64   # Windows (x86_64)
 make build-windows-arm64   # Windows (ARM64)
-make build-all          # 一次性构建全部六个
+make build-all          # 一次性构建全部八个
 make sha256sum          # 同时产出 sha256sum.txt
 ```
 

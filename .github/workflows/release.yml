@@ -116,6 +116,10 @@ jobs:
             goarch: amd64
           - goos: windows
             goarch: arm64
+          - goos: freebsd
+            goarch: amd64
+          - goos: freebsd
+            goarch: arm64
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -289,6 +293,8 @@ jobs:
           VERSION="${GITHUB_REF_NAME#v}"
           PLATFORMS="darwin-arm64:opencodereview-darwin-arm64:opencodereview
           darwin-x64:opencodereview-darwin-amd64:opencodereview
+          freebsd-arm64:opencodereview-freebsd-arm64:opencodereview
+          freebsd-x64:opencodereview-freebsd-amd64:opencodereview
           linux-arm64:opencodereview-linux-arm64:opencodereview
           linux-x64:opencodereview-linux-amd64:opencodereview
           win32-arm64:opencodereview-windows-arm64.exe:opencodereview.exe

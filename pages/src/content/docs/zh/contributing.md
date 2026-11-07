@@ -27,7 +27,7 @@ OCR 是 Apache-2.0 许可下的开源项目。欢迎 bug 报告、文档修复�
 
 - [Go ≥ 1.26.10](https://go.dev/dl/)
 - [Git](https://git-scm.com/)
-- [Make](https://www.gnu.org/software/make/)
+- [GNU Make](https://www.gnu.org/software/make/)（FreeBSD 上请用 `pkg install gmake` 安装 `gmake`，并以 `gmake` 代替 `make`）
 
 ### 获取源码
 
@@ -62,9 +62,11 @@ make test        # LC_ALL=C go test -v -race -count=1 ./...
 | `make build-darwin-arm64` | 交叉编译 macOS Apple Silicon。 |
 | `make build-linux-amd64` | 交叉编译 Linux x86_64。 |
 | `make build-linux-arm64` | 交叉编译 Linux ARM64。 |
+| `make build-freebsd-amd64` | 交叉编译 FreeBSD x86_64。 |
+| `make build-freebsd-arm64` | 交叉编译 FreeBSD ARM64。 |
 | `make build-windows-amd64` | 交叉编译 Windows x86_64。 |
 | `make build-windows-arm64` | 交叉编译 Windows ARM64。 |
-| `make build-all` | 全部六个交叉编译二进制（linux/darwin/windows × amd64/arm64）。 |
+| `make build-all` | 全部八个交叉编译二进制（linux/darwin/freebsd/windows × amd64/arm64）。 |
 | `make sha256sum` | 为构建产物生成 `sha256sum.txt`。 |
 | `make dist` | `clean → build-all → sha256sum`。CI 运行的内容。 |
 | `make test` | 带 race 检测运行测试。 |

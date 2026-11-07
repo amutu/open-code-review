@@ -71,7 +71,7 @@ curl -fsSL https://open-codereview.ai/install.sh | sh
 | `OCR_VERSION` | последний релиз | Закрепить конкретный тег релиза (например `v1.2.3`). |
 | `OCR_GITHUB_MIRROR` | не задана | Скачивать бинарник релиза и его контрольную сумму через зеркало GitHub (например `gh-proxy.com`). |
 
-Скрипт поддерживает `darwin` и `linux` на `amd64` / `arm64`.
+Скрипт поддерживает `darwin`, `linux` и `freebsd` на `amd64` / `arm64`.
 
 #### Использование зеркала GitHub
 
@@ -126,6 +126,14 @@ chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-linux-arm64
 chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 
+# FreeBSD x86_64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-amd64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
+# FreeBSD ARM64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-arm64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
 # Windows (AMD64)
 curl -Lo ocr.exe https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-windows-amd64.exe
 
@@ -161,6 +169,8 @@ make build              # пишет dist/opencodereview (dist/opencodereview.ex
 sudo cp dist/opencodereview /usr/local/bin/ocr
 ```
 
+> **FreeBSD:** системный `make` — это BSD make, который не умеет разбирать этот Makefile. Установите GNU make (`pkg install gmake`) и используйте `gmake` вместо `make` для всех целей ниже.
+
 #### Сборка под другую платформу
 
 ```bash
@@ -168,9 +178,11 @@ make build-linux-amd64
 make build-linux-arm64
 make build-darwin-amd64
 make build-darwin-arm64
+make build-freebsd-amd64   # FreeBSD (x86_64)
+make build-freebsd-arm64   # FreeBSD (ARM64)
 make build-windows-amd64   # Windows (x86_64)
 make build-windows-arm64   # Windows (ARM64)
-make build-all          # все шесть сразу
+make build-all          # все восемь сразу
 make sha256sum          # также создать sha256sum.txt
 ```
 

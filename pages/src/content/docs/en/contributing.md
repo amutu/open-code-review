@@ -30,7 +30,7 @@ You don't have to write Go to be useful:
 
 - [Go ≥ 1.26.10](https://go.dev/dl/)
 - [Git](https://git-scm.com/)
-- [Make](https://www.gnu.org/software/make/)
+- [GNU Make](https://www.gnu.org/software/make/) (on FreeBSD install `gmake` with `pkg install gmake` and use it in place of `make`)
 
 ### Getting the source
 
@@ -66,9 +66,11 @@ For convenience, drop a symlink at `~/bin/ocr-dev` pointing at
 | `make build-darwin-arm64` | Cross-compile for macOS Apple Silicon. |
 | `make build-linux-amd64` | Cross-compile for Linux x86_64. |
 | `make build-linux-arm64` | Cross-compile for Linux ARM64. |
+| `make build-freebsd-amd64` | Cross-compile for FreeBSD x86_64. |
+| `make build-freebsd-arm64` | Cross-compile for FreeBSD ARM64. |
 | `make build-windows-amd64` | Cross-compile for Windows x86_64. |
 | `make build-windows-arm64` | Cross-compile for Windows ARM64. |
-| `make build-all` | All six cross-compiled binaries (linux/darwin/windows × amd64/arm64). |
+| `make build-all` | All eight cross-compiled binaries (linux/darwin/freebsd/windows × amd64/arm64). |
 | `make sha256sum` | Generate `sha256sum.txt` for build artifacts. |
 | `make dist` | `clean → build-all → sha256sum`. What CI runs. |
 | `make test` | Run tests with race detector. |

@@ -30,7 +30,7 @@ Go를 쓰지 않아도 도울 수 있습니다.
 
 - [Go 1.26.10 이상](https://go.dev/dl/)
 - [Git](https://git-scm.com/)
-- [Make](https://www.gnu.org/software/make/)
+- [GNU Make](https://www.gnu.org/software/make/) (FreeBSD에서는 `pkg install gmake`로 `gmake`를 설치하고 `make` 대신 사용하세요)
 
 ### 소스 내려받기 {#getting-the-source}
 
@@ -66,9 +66,11 @@ make test        # LC_ALL=C go test -v -race -count=1 ./...
 | `make build-darwin-arm64` | macOS Apple Silicon용 크로스 컴파일. |
 | `make build-linux-amd64` | Linux x86_64용 크로스 컴파일. |
 | `make build-linux-arm64` | Linux ARM64용 크로스 컴파일. |
+| `make build-freebsd-amd64` | FreeBSD x86_64용 크로스 컴파일. |
+| `make build-freebsd-arm64` | FreeBSD ARM64용 크로스 컴파일. |
 | `make build-windows-amd64` | Windows x86_64용 크로스 컴파일. |
 | `make build-windows-arm64` | Windows ARM64용 크로스 컴파일. |
-| `make build-all` | 크로스 컴파일 바이너리 여섯 개 전부(linux/darwin/windows × amd64/arm64). |
+| `make build-all` | 크로스 컴파일 바이너리 여덟 개 전부(linux/darwin/freebsd/windows × amd64/arm64). |
 | `make sha256sum` | 빌드 산출물의 `sha256sum.txt`를 만듭니다. |
 | `make dist` | `clean → build-all → sha256sum`. CI가 돌리는 것입니다. |
 | `make test` | 레이스 디텍터를 켜고 테스트를 돌립니다. |

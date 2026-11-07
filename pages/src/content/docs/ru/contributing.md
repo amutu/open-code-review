@@ -31,7 +31,7 @@ OCR распространяется с открытым исходным код
 
 - [Go ≥ 1.26.10](https://go.dev/dl/)
 - [Git](https://git-scm.com/)
-- [Make](https://www.gnu.org/software/make/)
+- [GNU Make](https://www.gnu.org/software/make/) (в FreeBSD установите `gmake` командой `pkg install gmake` и используйте его вместо `make`)
 
 ### Получение исходного кода
 
@@ -67,9 +67,11 @@ make test        # LC_ALL=C go test -v -race -count=1 ./...
 | `make build-darwin-arm64` | Кросс-компиляция для macOS Apple Silicon. |
 | `make build-linux-amd64` | Кросс-компиляция для Linux x86_64. |
 | `make build-linux-arm64` | Кросс-компиляция для Linux ARM64. |
+| `make build-freebsd-amd64` | Кросс-компиляция для FreeBSD x86_64. |
+| `make build-freebsd-arm64` | Кросс-компиляция для FreeBSD ARM64. |
 | `make build-windows-amd64` | Кросс-компиляция для Windows x86_64. |
 | `make build-windows-arm64` | Кросс-компиляция для Windows ARM64. |
-| `make build-all` | Все шесть кросс-компилированных бинарных файлов (linux/darwin/windows × amd64/arm64). |
+| `make build-all` | Все восемь кросс-компилированных бинарных файлов (linux/darwin/freebsd/windows × amd64/arm64). |
 | `make sha256sum` | Создаёт `sha256sum.txt` для артефактов сборки. |
 | `make dist` | `clean → build-all → sha256sum`. Эту цель запускает CI. |
 | `make test` | Запускает тесты с детектором гонок. |

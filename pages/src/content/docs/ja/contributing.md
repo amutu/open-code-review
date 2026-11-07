@@ -27,7 +27,7 @@ Go を書かなくても貢献できます。
 
 - [Go ≥ 1.26.10](https://go.dev/dl/)
 - [Git](https://git-scm.com/)
-- [Make](https://www.gnu.org/software/make/)
+- [GNU Make](https://www.gnu.org/software/make/)（FreeBSD では `pkg install gmake` で `gmake` を導入し、`make` の代わりに使用します）
 
 ### ソースコードの取得
 
@@ -62,9 +62,11 @@ make test        # LC_ALL=C go test -v -race -count=1 ./...
 | `make build-darwin-arm64` | macOS Apple Silicon 向けのクロスコンパイル。 |
 | `make build-linux-amd64` | Linux x86_64 向けのクロスコンパイル。 |
 | `make build-linux-arm64` | Linux ARM64 向けのクロスコンパイル。 |
+| `make build-freebsd-amd64` | FreeBSD x86_64 向けのクロスコンパイル。 |
+| `make build-freebsd-arm64` | FreeBSD ARM64 向けのクロスコンパイル。 |
 | `make build-windows-amd64` | Windows x86_64 向けのクロスコンパイル。 |
 | `make build-windows-arm64` | Windows ARM64 向けのクロスコンパイル。 |
-| `make build-all` | 6 つすべてのクロスコンパイルバイナリ（linux/darwin/windows × amd64/arm64）。 |
+| `make build-all` | 8 つすべてのクロスコンパイルバイナリ（linux/darwin/freebsd/windows × amd64/arm64）。 |
 | `make sha256sum` | ビルド成果物の `sha256sum.txt` を生成。 |
 | `make dist` | `clean → build-all → sha256sum`。CI が実行する内容。 |
 | `make test` | race 検出を有効にしてテストを実行。 |

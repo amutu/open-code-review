@@ -150,11 +150,11 @@ test("manual preflight is separated from tag publishing", () => {
   assert.doesNotMatch(WORKFLOW, /NPM_TOKEN|NODE_AUTH_TOKEN|_authToken/);
 });
 
-test("HTTP 201 validates all seven packages without publishing", () => {
+test("HTTP 201 validates all nine packages without publishing", () => {
   const result = execute(PREFLIGHT);
   assert.strictEqual(result.status, 0, result.stdout + result.stderr);
   const verified = Array.from(result.stdout.matchAll(/^OK\s+(\S+)$/gm), (match) => match[1]).sort();
-  assert.strictEqual(PACKAGES.length, 7);
+  assert.strictEqual(PACKAGES.length, 9);
   assert.deepStrictEqual(verified, PACKAGES);
   assert.ok(result.calls.every((call) => call.command === "curl"));
   const requests = result.calls.map((call) => call.args[call.args.length - 1]);

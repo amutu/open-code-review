@@ -2,6 +2,7 @@
 	build-all dist sha256sum version-info \
 	build-linux-amd64 build-linux-arm64 build-darwin-amd64 build-darwin-arm64 \
 	build-windows-amd64 build-windows-arm64 \
+	build-freebsd-amd64 build-freebsd-arm64 \
 	license-check license-add english-check
 
 BINARY_NAME := opencodereview
@@ -105,7 +106,13 @@ build-windows-amd64:
 build-windows-arm64:
 	$(call BUILD_PLATFORM,windows,arm64,.exe)
 
-build-all: build-linux-amd64 build-linux-arm64 build-darwin-amd64 build-darwin-arm64 build-windows-amd64 build-windows-arm64
+build-freebsd-amd64:
+	$(call BUILD_PLATFORM,freebsd,amd64)
+
+build-freebsd-arm64:
+	$(call BUILD_PLATFORM,freebsd,arm64)
+
+build-all: build-linux-amd64 build-linux-arm64 build-darwin-amd64 build-darwin-arm64 build-windows-amd64 build-windows-arm64 build-freebsd-amd64 build-freebsd-arm64
 
 # Generate SHA256 checksums for all release binaries
 sha256sum: build-all

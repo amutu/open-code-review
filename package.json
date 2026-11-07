@@ -33,6 +33,8 @@
   "optionalDependencies": {
     "@alibaba-group/ocr-darwin-arm64": "0.0.0",
     "@alibaba-group/ocr-darwin-x64": "0.0.0",
+    "@alibaba-group/ocr-freebsd-arm64": "0.0.0",
+    "@alibaba-group/ocr-freebsd-x64": "0.0.0",
     "@alibaba-group/ocr-linux-arm64": "0.0.0",
     "@alibaba-group/ocr-linux-x64": "0.0.0",
     "@alibaba-group/ocr-win32-arm64": "0.0.0",

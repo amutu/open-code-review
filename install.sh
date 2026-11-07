@@ -23,7 +23,7 @@ main() {
 
   os="$(uname -s | tr '[:upper:]' '[:lower:]')"
   case "$os" in
-    darwin|linux) ;;
+    darwin|linux|freebsd) ;;
     *) err "unsupported OS: $os (on Windows use: irm https://open-codereview.ai/install.ps1 | iex)" ;;
   esac
 
@@ -102,14 +102,17 @@ post_install_path_notice() {
   command -v "$bin" >/dev/null 2>&1 || printf 'note: open a new shell so %s resolves on PATH\n' "$bin"
 }
 
-# Print the SHA-256 of a file, preferring shasum (macOS) over sha256sum (Linux).
+# Print the SHA-256 of a file, preferring shasum (macOS) over sha256sum (Linux),
+# then sha256 (the base system tool on FreeBSD).
 sha256() {
   if command -v shasum >/dev/null 2>&1; then
     shasum -a 256 "$1"
   elif command -v sha256sum >/dev/null 2>&1; then
     sha256sum "$1"
+  elif command -v sha256 >/dev/null 2>&1; then
+    sha256 -q "$1"
   else
-    err "shasum or sha256sum is required for checksum verification"
+    err "shasum, sha256sum or sha256 is required for checksum verification"
   fi
 }
 

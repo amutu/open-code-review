@@ -48,13 +48,14 @@ function detectPlatform() {
   switch (os) {
     case "linux":
     case "darwin":
+    case "freebsd":
       break;
     case "win32":
       os = "windows";
       break;
     default:
       throw new Error(
-        `Unsupported operating system: ${os}. Supported: linux, darwin, win32`
+        `Unsupported operating system: ${os}. Supported: linux, darwin, freebsd, win32`
       );
   }
 

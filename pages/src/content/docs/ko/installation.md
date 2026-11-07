@@ -66,7 +66,7 @@ curl -fsSL https://open-codereview.ai/install.sh | sh
 | `OCR_VERSION` | 최신 릴리스 | 특정 릴리스 태그로 고정(예: `v1.2.3`). |
 | `OCR_GITHUB_MIRROR` | *(설정 안 함)* | 릴리스 바이너리와 체크섬을 GitHub 미러 도메인(예: `gh-proxy.com`)을 통해 내려받습니다. |
 
-스크립트는 `amd64` / `arm64`의 `darwin`과 `linux`를 지원합니다.
+스크립트는 `amd64` / `arm64`의 `darwin`과 `linux`, `freebsd`를 지원합니다.
 
 #### GitHub 미러 사용 {#using-a-github-mirror}
 
@@ -115,6 +115,14 @@ chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-linux-arm64
 chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
 
+# FreeBSD x86_64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-amd64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
+# FreeBSD ARM64
+curl -Lo ocr https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-freebsd-arm64
+chmod +x ocr && sudo mv ocr /usr/local/bin/ocr
+
 # Windows (AMD64)
 curl -Lo ocr.exe https://github.com/alibaba/open-code-review/releases/latest/download/opencodereview-windows-amd64.exe
 
@@ -148,6 +156,8 @@ make build              # dist/opencodereview 생성 (Windows에서는 dist/open
 sudo cp dist/opencodereview /usr/local/bin/ocr
 ```
 
+> **FreeBSD:** 기본 시스템의 `make`는 BSD make이며 이 Makefile을 해석하지 못합니다. GNU make를 설치하고(`pkg install gmake`) 아래 모든 대상에서 `make` 대신 `gmake`를 사용하세요.
+
 #### 다른 플랫폼용 빌드 {#build-for-another-platform}
 
 ```bash
@@ -155,9 +165,11 @@ make build-linux-amd64
 make build-linux-arm64
 make build-darwin-amd64
 make build-darwin-arm64
+make build-freebsd-amd64   # FreeBSD (x86_64)
+make build-freebsd-arm64   # FreeBSD (ARM64)
 make build-windows-amd64   # Windows (x86_64)
 make build-windows-arm64   # Windows (ARM64)
-make build-all          # 여섯 개 한 번에
+make build-all          # 여덟 개 한 번에
 make sha256sum          # sha256sum.txt도 생성
 ```
 

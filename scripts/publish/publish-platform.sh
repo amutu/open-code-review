@@ -24,6 +24,8 @@ PROJECT_ROOT="$(resolve_project_root)"
 PLATFORMS=(
   "darwin-arm64:opencodereview-darwin-arm64:opencodereview"
   "darwin-x64:opencodereview-darwin-amd64:opencodereview"
+  "freebsd-arm64:opencodereview-freebsd-arm64:opencodereview"
+  "freebsd-x64:opencodereview-freebsd-amd64:opencodereview"
   "linux-arm64:opencodereview-linux-arm64:opencodereview"
   "linux-x64:opencodereview-linux-amd64:opencodereview"
   "win32-arm64:opencodereview-windows-arm64.exe:opencodereview.exe"
