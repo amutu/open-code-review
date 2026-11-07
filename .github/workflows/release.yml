@@ -306,6 +306,10 @@ jobs:
             dist_binary="${rest%%:*}"
             dest_name="${rest#*:}"
             pkg_dir="./npm/$platform_dir"
+            if [ ! -f "$pkg_dir/package.json" ]; then
+              echo "::error::Missing npm manifest for $platform_dir: $pkg_dir/package.json"
+              exit 1
+            fi
             mkdir -p "$pkg_dir/bin"
             cp "$dist_binary" "$pkg_dir/bin/$dest_name"
             chmod 755 "$pkg_dir/bin/$dest_name" 2>/dev/null || true

@@ -219,4 +219,73 @@ test("both publish paths require provenance", () => {
   }
 });
 
+// The release pipeline copies each platform binary into npm/<platform>/bin and
+// bumps the manifest there, so a platform listed in package.json without its
+// manifest (or vice versa) aborts publishing mid-loop. Keep the two in lockstep.
+test("every optional dependency has a matching npm platform manifest", () => {
+  for (const dep of Object.keys(MANIFEST.optionalDependencies)) {
+    const platformDir = dep.replace(/^@alibaba-group\/ocr-/, "");
+    const manifestPath = path.join(ROOT, "npm", platformDir, "package.json");
+    assert.ok(fs.existsSync(manifestPath), `missing npm manifest: npm/${platformDir}/package.json`);
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    assert.strictEqual(manifest.name, dep, `name mismatch in npm/${platformDir}/package.json`);
+    assert.strictEqual(manifest.os.length, 1, `npm/${platformDir} must declare one os`);
+    assert.strictEqual(manifest.cpu.length, 1, `npm/${platformDir} must declare one cpu`);
+  }
+});
+
+test("npm platform directories mirror optionalDependencies exactly", () => {
+  const dirs = fs.readdirSync(path.join(ROOT, "npm"))
+    .filter((entry) => fs.existsSync(path.join(ROOT, "npm", entry, "package.json")));
+  const expected = Object.keys(MANIFEST.optionalDependencies)
+    .map((dep) => dep.replace(/^@alibaba-group\/ocr-/, ""));
+  assert.deepStrictEqual(dirs.sort(), expected.sort());
+});
+
+// install.sh's checksum helper is named `sha256`, so the branch that falls back
+// to the base-system tool must call it through `command`: POSIX sh resolves
+// functions before PATH executables, and a bare `sha256 -q` would re-enter the
+// helper and recurse until the shell dies.
+test("install.sh sha256 helper invokes the external tool via `command`", () => {
+  const install = fs.readFileSync(path.join(ROOT, "install.sh"), "utf8");
+  const match = install.match(/sha256\(\)\s*\{([\s\S]*?)\n\}/);
+  assert.ok(match, "install.sh must define a sha256() helper");
+  const body = match[1];
+  const bareCall = body.split("\n").find((line) => /^\s*sha256\s+-q\b/.test(line));
+  assert.strictEqual(bareCall, undefined, `sha256 branch must use "command sha256": ${bareCall}`);
+  assert.match(body, /command\s+sha256\s+-q/, "sha256 branch must invoke command sha256 -q");
+});
+
+test("install.sh sha256 helper returns the digest without shasum/sha256sum", () => {
+  const sha256Bin = ["/sbin/sha256", "/usr/bin/sha256", "/bin/sha256", "/usr/local/bin/sha256"]
+    .find((candidate) => fs.existsSync(candidate));
+  const shBin = "/bin/sh";
+  if (!sha256Bin || !fs.existsSync(shBin)) return; // no base-system sha256 to exercise
+
+  const install = fs.readFileSync(path.join(ROOT, "install.sh"), "utf8");
+  const body = install.match(/sha256\(\)\s*\{([\s\S]*?)\n\}/)[1];
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ocr-sha256-"));
+  const binDir = path.join(dir, "bin");
+  fs.mkdirSync(binDir);
+  fs.symlinkSync(sha256Bin, path.join(binDir, "sha256"));
+  const file = path.join(dir, "payload");
+  fs.writeFileSync(file, "abc");
+  const script = `sha256() {${body}\n}\nsha256 ${file}\n`;
+  try {
+    const result = spawnSync(shBin, ["-c", script], {
+      encoding: "utf8",
+      timeout: 5000,
+      env: { PATH: binDir },
+    });
+    assert.ifError(result.error);
+    assert.strictEqual(result.status, 0, result.stdout + result.stderr);
+    assert.strictEqual(
+      result.stdout.trim(),
+      "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+    );
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 if (failures) process.exitCode = 1;

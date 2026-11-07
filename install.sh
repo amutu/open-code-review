@@ -103,14 +103,16 @@ post_install_path_notice() {
 }
 
 # Print the SHA-256 of a file, preferring shasum (macOS) over sha256sum (Linux),
-# then sha256 (the base system tool on FreeBSD).
+# then sha256 (the base system tool on FreeBSD). `command` is required on the
+# sha256 branch so the shell calls the external tool instead of re-entering this
+# function of the same name (POSIX resolves functions before PATH executables).
 sha256() {
   if command -v shasum >/dev/null 2>&1; then
     shasum -a 256 "$1"
   elif command -v sha256sum >/dev/null 2>&1; then
     sha256sum "$1"
   elif command -v sha256 >/dev/null 2>&1; then
-    sha256 -q "$1"
+    command sha256 -q "$1"
   else
     err "shasum, sha256sum or sha256 is required for checksum verification"
   fi

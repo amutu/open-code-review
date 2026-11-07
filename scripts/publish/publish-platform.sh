@@ -43,10 +43,13 @@ if [ -n "${OCR_PKG_NAME:-}" ]; then
     SCOPE_OVERRIDE="${OCR_PKG_NAME%%/*}"
 fi
 
-# Pre-check all binaries exist before publishing anything
+# Pre-check all binaries and platform manifests exist before publishing anything,
+# so a missing npm/<platform>/package.json fails here with a clear message instead
+# of aborting mid-loop at the first `cp` under `set -e`.
 for entry in "${PLATFORMS[@]}"; do
-    IFS=':' read -r _ dist_binary _ <<< "$entry"
+    IFS=':' read -r platform_dir dist_binary _ <<< "$entry"
     [ -f "$PROJECT_ROOT/dist/$dist_binary" ] || die "Binary not found: $PROJECT_ROOT/dist/$dist_binary"
+    [ -f "$PROJECT_ROOT/npm/$platform_dir/package.json" ] || die "Platform manifest not found: $PROJECT_ROOT/npm/$platform_dir/package.json"
 done
 
 FAILED_PLATFORMS=()
